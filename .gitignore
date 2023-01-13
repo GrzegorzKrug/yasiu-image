@@ -3,8 +3,18 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Cache
+*.idea
+
 # C extensions
 *.so
+
+# Images
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
 
 # Distribution / packaging
 .Python
