@@ -8,6 +8,13 @@ Module with useful math functions that are missing in numpy or scipy.
 pip install yasiu-image
 ```
 
+## Submodules
+- `image` - General functionality
+- `features` - Transform images into features and back
+- `filters` - Functions that modify image
+- `convolve` - 2D convolution
+
+
 ## Sequence reader Generators
 
 - `read_webp_frames` - generator

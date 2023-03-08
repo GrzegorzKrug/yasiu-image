@@ -8,7 +8,7 @@ project_urls = {
         "3. Image Package": "https://pypi.org/project/yasiu-image/",
         "4. Visualisation Package": "https://pypi.org/project/yasiu-vis/",
 
-        "5. Source repo": "https://github.com/GrzegorzKrug/yasiu.image",
+        "5. Source repo": "https://github.com/GrzegorzKrug/yasiu-image",
 }
 
 classifiers = [
