@@ -1,20 +1,21 @@
-import numpy as np
+import numpy as _np
 
-from PIL import Image
-import cv2
+from PIL import _Image as _Image
+import _cv2 as _cv2
 
-from yasiu_image.filters import mirror
+
+# from yasiu_image.filters import mirror
 
 
 def read_gif_frames(path):
-    img = Image.open(path, )
+    img = _Image.open(path, )
     ind = 0
     # sequence = []
     # img = img.convert("RGBA")
     img.seek(0)
     # fr = np.array(img, dtype=np.uint8)
     while True:
-        fr = np.array(img, dtype=np.uint8).copy()
+        fr = _np.array(img, dtype=_np.uint8).copy()
         # print(f"Read shape: {fr.shape}")
         # sequence.append(fr)
         yield fr
@@ -28,13 +29,13 @@ def read_gif_frames(path):
 
 
 def read_webp_frames(path):
-    img = Image.open(path)
+    img = _Image.open(path)
     ind = 0
 
     img.seek(0)
     # fr = np.array(img, dtype=np.uint8)
     while True:
-        fr = np.array(img, dtype=np.uint8).copy()
+        fr = _np.array(img, dtype=_np.uint8).copy()
         yield fr
 
         ind += 1
@@ -68,14 +69,14 @@ def save_image_list_to_gif(frames, exp_path, use_rgba=False, duration=40, qualit
             print(img.shape)
             assert img.shape[2] == 3, f"Image must have alpha channel! But has: {img.shape}"
 
-        pil_frames = [Image.fromarray(fr).convert("RGBA") for fr in frames]
+        pil_frames = [_Image.fromarray(fr).convert("RGBA") for fr in frames]
 
         for pil_fr, fr in zip(pil_frames, frames):
-            alpha_pil = Image.fromarray(fr[:, :, 3])
+            alpha_pil = _Image.fromarray(fr[:, :, 3])
             pil_fr.putalpha(alpha_pil)
 
     else:
-        pil_frames = [Image.fromarray(fr).convert("RGB") for fr in frames]
+        pil_frames = [_Image.fromarray(fr).convert("RGB") for fr in frames]
 
     pil_frames[0].save(
             exp_path, save_all=True, append_images=pil_frames[1:],
@@ -128,12 +129,12 @@ def resize_with_aspect_ratio(orig, resize_key='outer', new_dim=150):
         new_w = new_dim
         new_h = new_dim * h_w_ratio
 
-    new_h = np.round(new_h).astype(int)
-    new_w = np.round(new_w).astype(int)
+    new_h = _np.round(new_h).astype(int)
+    new_w = _np.round(new_w).astype(int)
 
     # print(f"Resize: kwarg: {kwarg}")
     # sequence = [imutils.resize(fr, **kwarg) for fr in sequence]
-    ret = cv2.resize(orig, (new_w, new_h))
+    ret = _cv2.resize(orig, (new_w, new_h))
     return ret
 
 
@@ -191,12 +192,12 @@ def downscale_with_aspect_ratio(orig, resize_key='outer', max_dimension=150):
     else:
         return orig
 
-    new_h = np.round(new_h).astype(int)
-    new_w = np.round(new_w).astype(int)
+    new_h = _np.round(new_h).astype(int)
+    new_w = _np.round(new_w).astype(int)
 
     # print(f"Resize: kwarg: {kwarg}")
     # sequence = [imutils.resize(fr, **kwarg) for fr in sequence]
-    ret = cv2.resize(orig, (new_w, new_h))
+    ret = _cv2.resize(orig, (new_w, new_h))
     return ret
 
 
@@ -218,30 +219,30 @@ def stack_images_to_grid(
 
     for ind, (ch, lb) in enumerate(zip(images, labels)):
         if len(ch.shape) == 2 and auto_convert_monochannel:
-            ch = ch[:, :, np.newaxis]
-            rgb = np.concatenate([ch, ch, ch], axis=2)
+            ch = ch[:, :, _np.newaxis]
+            rgb = _np.concatenate([ch, ch, ch], axis=2)
 
         elif ch.shape[2] == 4:
             rgb = ch[:, :, :3]
 
         elif ch.shape[2] == 1:
-            rgb = np.concatenate([ch, ch, ch], axis=2)
+            rgb = _np.concatenate([ch, ch, ch], axis=2)
 
         else:
             # print("WHAT? What i missed?")
             # print(ch.shape)
             rgb = ch
 
-        rgb = rgb.astype(np.uint8)
+        rgb = rgb.astype(_np.uint8)
 
-        rgb = cv2.putText(
+        rgb = _cv2.putText(
                 rgb, lb, (5, 30),
-                fontScale=font_scale, fontFace=cv2.FONT_HERSHEY_SIMPLEX, color=(50, 50, 0),
+                fontScale=font_scale, fontFace=_cv2.FONT_HERSHEY_SIMPLEX, color=(50, 50, 0),
                 thickness=font_thickness + 5,
         )
-        rgb = cv2.putText(
+        rgb = _cv2.putText(
                 rgb, lb, (5, 30),
-                fontScale=font_scale, fontFace=cv2.FONT_HERSHEY_SIMPLEX, color=(50, 255, 0),
+                fontScale=font_scale, fontFace=_cv2.FONT_HERSHEY_SIMPLEX, color=(50, 255, 0),
                 thickness=font_thickness,
         )
 
@@ -249,7 +250,7 @@ def stack_images_to_grid(
         if row_pic is None:
             row_pic = rgb
         else:
-            row_pic = np.concatenate([row_pic, rgb], 1)
+            row_pic = _np.concatenate([row_pic, rgb], 1)
 
         # print(f"Row Pic: {row_pic.shape}")
 
@@ -257,7 +258,7 @@ def stack_images_to_grid(
             if output_pic is None:
                 output_pic = row_pic
             else:
-                output_pic = np.concatenate([output_pic, row_pic], axis=0)
+                output_pic = _np.concatenate([output_pic, row_pic], axis=0)
             row_pic = None
 
     if row_pic is not None:
@@ -265,21 +266,69 @@ def stack_images_to_grid(
             output_pic = row_pic
         else:
             _, match_w, _ = output_pic.shape
-            blank = np.zeros((h, match_w, c), dtype=np.uint8)
+            blank = _np.zeros((h, match_w, c), dtype=_np.uint8)
             cur_h, cur_w, _ = row_pic.shape
             blank[:cur_h, :cur_w] = row_pic
-            output_pic = np.concatenate([output_pic, blank], axis=0)
+            output_pic = _np.concatenate([output_pic, blank], axis=0)
 
     return output_pic
 
 
-__all__ = ['read_webp_frames', 'read_gif_frames', 'save_image_list_to_gif','resize_with_aspect_ratio','stack_images_to_grid']
+def squerify(img: _np.ndarray, /, offset_val=0, *, type_="clip"):
+    """
+
+    :param img:
+    :param type_:
+    :param offset_val:
+    :return:
+    """
+
+    is_3d = len(img.shape) == 3
+    if is_3d:
+        H, W, C = img.shape
+    else:
+        H, W = img.shape
+        C = None
+
+    if H == W:
+        "Square already"
+        return img
+
+    if type_ == "clip":
+        offset = abs(H - W)
+        pos = (_np.clip(offset_val, -1, 1) + 1) / 2
+
+        first = (offset * pos).round().astype(int)
+        second = first - offset
+        if second == 0:
+            second = None
+
+        if H > W:
+            new_img = img[first:second, :]
+        else:
+            new_img = img[:, first:second]
+
+        # print("new shape", new_img.shape)
+        return new_img
+    else:
+        raise KeyError("Only clip supported")
+
+
+__all__ = [
+        'read_webp_frames', 'read_gif_frames', 'save_image_list_to_gif',
+        'downscale_with_aspect_ratio', 'resize_with_aspect_ratio', 'stack_images_to_grid', 'squerify']
 
 if __name__ == "__main__":
-    cat_pic = cv2.imread("cat.jpg", 1)
-    cat_pic = downscale_with_aspect_ratio(cat_pic, resize_key='outer', max_dimension=500)
-    out = mirror(cat_pic, 0.2, axis=1, flip=True)
+    img = _cv2.imread("cat.jpg")
+    img = downscale_with_aspect_ratio(img, max_dimension=500)
+    img = img[200:, :, :]
 
-    # cv2.imshow("Cat orig", cat_pic)
-    cv2.imshow("Cat mirrored", out)
-    cv2.waitKey()
+    _cv2.imshow("Orig", img)
+
+    sq = squerify(img, -1)
+    _cv2.imshow("Cat Square -1", sq)
+    sq = squerify(img, 0)
+    _cv2.imshow("Cat Square 0 ", sq)
+    sq = squerify(img, 1)
+    _cv2.imshow("Cat Square 1", sq)
+    _cv2.waitKey()
