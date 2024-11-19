@@ -3,11 +3,12 @@ import numpy as np
 
 def mirrorAxis(picture, horizontalMirror: bool = True, pos=0.5,  flip=False):
     """
+    Mirror image along axis in given position.
 
     :param picture: array, 2d, 3d
     :param pos: Float or Int
-            Float - <0, 1> Axis position.
-            Int - <0, MaxDimension> Imag position
+            Float - <0, 1> Axis position = number * dimention.
+            Int - <0, MaxDimension> Image position
 
     :param axis: 0=horizontal mirror, 1=vertical mirror
     :param flip: bool, flag for flipping other side

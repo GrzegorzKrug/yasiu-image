@@ -8,6 +8,12 @@ import matplotlib.pyplot as _plt
 
 
 def image_to_features(image, include_pos=False, norm_pos=True, weight_pos=1.0):
+    """
+    Convert each pixel into separate feature
+    include_pos: bool, to add pixel location or not.
+    norm_pos: bool, to normalize position to <0,1> range
+    weight_pos: scale normalized position with weight
+    """
     h, w, *_ = image.shape
     fts = image.reshape(h * w, -1) / 255
 
@@ -28,7 +34,16 @@ def image_to_features(image, include_pos=False, norm_pos=True, weight_pos=1.0):
     return fts
 
 
+__all__ = [
+    'image_to_features',
+    'features_to_image',
+]
+
+
 def features_to_image(features, shape, remove_pos_columns=False, undo_normalization=True):
+    """
+    Revert features to image.
+    """
     if remove_pos_columns:
         features = features[:, :-2]
 
@@ -40,7 +55,7 @@ def features_to_image(features, shape, remove_pos_columns=False, undo_normalizat
         # shape = h, w
 
     image = features.reshape(shape)
-    
+
     if undo_normalization:
         image = _np.round(image * 255).astype(_np.uint8)
 
@@ -48,7 +63,8 @@ def features_to_image(features, shape, remove_pos_columns=False, undo_normalizat
 
 
 if __name__ == "__main__":
-    image = _cv2.imread("cat.jpg")
+    import os
+    image = _cv2.imread(os.path.join(os.path.dirname(__file__), "cat.jpg"))
     # image = _cv2.resize(image, (400, 400), )
 
     # image = np.arange(30, dtype=np.uint8)
@@ -69,7 +85,7 @@ if __name__ == "__main__":
     # print(image.shape, rev_img.shape)
 
     # stack = stack_images_to_grid([image, rev_img])
-    image = image[:, :, [2, 1, 0]]
+    # image = image[:, :, [2, 1, 0]]
     stack = _np.concatenate([image, rev_img], axis=1).astype(_np.uint8)
     _plt.imshow(stack)
     # plt.figure()
