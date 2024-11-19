@@ -9,10 +9,10 @@ pip install yasiu-image
 ```
 
 ## Submodules
-- `image` - General functionality
+- `common` - Read write features
 - `features` - Transform images into features and back
-- `filters` - Functions that modify image
-- `convolve` - 2D convolution
+- `filters` - Functions that modify image but keep original shape
+- `modifiers` - Functions that change output images
 
 
 ## Sequence reader Generators
@@ -24,7 +24,8 @@ pip install yasiu-image
 ### Use example:
 
 ```py
-from yasiu_image.image import read_gif_frames
+from yasiu.image.common import read_gif_frames
+```
 
 
 frames = list(read_gif_frames(path))
