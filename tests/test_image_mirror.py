@@ -1,5 +1,5 @@
 import pytest
-from yasiu_image.filters import mirror
+from yasiu_image.filters import mirrorAxis
 
 import numpy as np
 
@@ -43,6 +43,6 @@ def test_1(image, val, ax, flag, request):
     # print(image)
     # print(image.shape)
     # raise ValueError
-    ret = mirror(image, pos=val, axis=ax, flip=flag)
+    ret = mirrorAxis(image, pos=val, verticalAxis=ax, flip=flag)
     assert ret.shape == image.shape, "Shape must be true"
     # assert (image == ret).all(), "Returned diff image"

@@ -111,16 +111,27 @@ def downscale_with_aspect_ratio(orig, resize_key='outer', max_dimension=150):
 
     # print(f"Resize: kwarg: {kwarg}")
     # sequence = [imutils.resize(fr, **kwarg) for fr in sequence]
-    ret = _cv2.resize(orig, (new_w, new_h))
-    return ret
+    if new_w < w or new_h < h:
+        ret = _cv2.resize(orig, (new_w, new_h))
+        return ret
+    return orig
 
 
-def squerify(img: _np.ndarray, /, offset_val=0, *, type_="clip"):
+def squerify(img: _np.ndarray, /, offset: float = 0.0, *, type_="clip"):
     """
+    Clip excessive fraction of image.
 
-    :param img:
-    :param type_:
-    :param offset_val:
+    :param img: 2d np.ndarry
+
+    :param type_: Only 'clip' is supported
+    
+    :param offset_val: float
+        Pan clip to side.
+        Horizonatal: -1 is left, 1 is right.
+        Vertical: -1 is up, 1 is down.
+
+        Offset = 0 clips at center.
+    
     :return:
     """
 
@@ -137,7 +148,7 @@ def squerify(img: _np.ndarray, /, offset_val=0, *, type_="clip"):
 
     if type_ == "clip":
         offset = abs(H - W)
-        pos = (_np.clip(offset_val, -1, 1) + 1) / 2
+        pos = (_np.clip(offset, -1, 1) + 1) / 2
 
         first = (offset * pos).round().astype(int)
         second = first - offset
@@ -165,10 +176,13 @@ __all__ = [
 if __name__ == "__main__":
     import os
     img = _cv2.imread(os.path.join(os.path.dirname(__file__), "cat.jpg"))
-    img = downscale_with_aspect_ratio(img, max_dimension=500)
-    img = img[200:, :, :]
+    smol = downscale_with_aspect_ratio(img, max_dimension=400)
+    smol2 = downscale_with_aspect_ratio(smol, max_dimension=600)
+    img = smol[200:, :, :]
 
     _cv2.imshow("Orig", img)
+    _cv2.imshow("Smol", smol)
+    _cv2.imshow("Smol600", smol2)
 
     sq = squerify(img, -1)
     _cv2.imshow("Cat Square -1", sq)
