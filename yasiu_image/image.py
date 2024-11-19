@@ -1,7 +1,7 @@
 import numpy as _np
 
-from PIL import _Image as _Image
-import _cv2 as _cv2
+from PIL import Image as _Image
+import cv2 as _cv2
 
 
 # from yasiu_image.filters import mirror
@@ -79,11 +79,11 @@ def save_image_list_to_gif(frames, exp_path, use_rgba=False, duration=40, qualit
         pil_frames = [_Image.fromarray(fr).convert("RGB") for fr in frames]
 
     pil_frames[0].save(
-            exp_path, save_all=True, append_images=pil_frames[1:],
-            optimize=False, loop=0,
-            # background=(0, 0, 0, 255),
-            quality=quality, duration=duration,
-            disposal=disposal,
+        exp_path, save_all=True, append_images=pil_frames[1:],
+        optimize=False, loop=0,
+        # background=(0, 0, 0, 255),
+        quality=quality, duration=duration,
+        disposal=disposal,
     )
     return 0
 
@@ -236,14 +236,16 @@ def stack_images_to_grid(
         rgb = rgb.astype(_np.uint8)
 
         rgb = _cv2.putText(
-                rgb, lb, (5, 30),
-                fontScale=font_scale, fontFace=_cv2.FONT_HERSHEY_SIMPLEX, color=(50, 50, 0),
-                thickness=font_thickness + 5,
+            rgb, lb, (5, 30),
+            fontScale=font_scale, fontFace=_cv2.FONT_HERSHEY_SIMPLEX, color=(
+                50, 50, 0),
+            thickness=font_thickness + 5,
         )
         rgb = _cv2.putText(
-                rgb, lb, (5, 30),
-                fontScale=font_scale, fontFace=_cv2.FONT_HERSHEY_SIMPLEX, color=(50, 255, 0),
-                thickness=font_thickness,
+            rgb, lb, (5, 30),
+            fontScale=font_scale, fontFace=_cv2.FONT_HERSHEY_SIMPLEX, color=(
+                50, 255, 0),
+            thickness=font_thickness,
         )
 
         # print(f"row: {row_pic.shape}, rgb: {rgb.shape}")
@@ -315,8 +317,8 @@ def squerify(img: _np.ndarray, /, offset_val=0, *, type_="clip"):
 
 
 __all__ = [
-        'read_webp_frames', 'read_gif_frames', 'save_image_list_to_gif',
-        'downscale_with_aspect_ratio', 'resize_with_aspect_ratio', 'stack_images_to_grid', 'squerify']
+    'read_webp_frames', 'read_gif_frames', 'save_image_list_to_gif',
+    'downscale_with_aspect_ratio', 'resize_with_aspect_ratio', 'stack_images_to_grid', 'squerify']
 
 if __name__ == "__main__":
     img = _cv2.imread("cat.jpg")
