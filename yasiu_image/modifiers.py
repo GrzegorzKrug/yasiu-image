@@ -136,6 +136,7 @@ def squerify(img: _np.ndarray, /, offset: float = 0.0, *, type_="clip"):
     """
 
     is_3d = len(img.shape) == 3
+
     if is_3d:
         H, W, C = img.shape
     else:
@@ -147,11 +148,11 @@ def squerify(img: _np.ndarray, /, offset: float = 0.0, *, type_="clip"):
         return img
 
     if type_ == "clip":
-        offset = abs(H - W)
+        gap = abs(H - W)
         pos = (_np.clip(offset, -1, 1) + 1) / 2
 
-        first = (offset * pos).round().astype(int)
-        second = first - offset
+        first = (gap * pos).round().astype(int)
+        second = first - gap
         if second == 0:
             second = None
 
@@ -181,13 +182,13 @@ if __name__ == "__main__":
     img = smol[200:, :, :]
 
     _cv2.imshow("Orig", img)
-    _cv2.imshow("Smol", smol)
-    _cv2.imshow("Smol600", smol2)
+    # _cv2.imshow("Smol", smol)
+    # _cv2.imshow("Smol600", smol2)
 
     sq = squerify(img, -1)
     _cv2.imshow("Cat Square -1", sq)
     sq = squerify(img, 0)
     _cv2.imshow("Cat Square 0 ", sq)
-    sq = squerify(img, 1)
+    sq = squerify(img, 0.5)
     _cv2.imshow("Cat Square 1", sq)
     _cv2.waitKey()
