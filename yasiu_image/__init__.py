@@ -1,5 +1,5 @@
-VERSION = 0, 1, 6
+VERSION = 0, 1, 7
 
 __version__ = VERSION
 
-__all__ = ['common', 'filters', 'modifiers', 'features']
+__all__ = ['common', 'filters', 'modifiers', 'features', "quality"]
