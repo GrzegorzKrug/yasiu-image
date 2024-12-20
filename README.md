@@ -11,8 +11,8 @@ pip install yasiu-image
 ## Submodules
 - `common` - Read write features
 - `features` - Transform images into features and back
-- `filters` - Modify images but keep original shape
-- `modifiers` - Change output images
+- `filters` - Apply image filter and keep shape
+- `modifiers` - Modify images with different shape output
 - `quality` - Compare image quality
 
 

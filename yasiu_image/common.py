@@ -4,9 +4,6 @@ from PIL import Image as _Image
 import cv2 as _cv2
 
 
-# from yasiu_image.filters import mirror
-
-
 def read_gif_frames(path):
     img = _Image.open(path, )
     ind = 0
