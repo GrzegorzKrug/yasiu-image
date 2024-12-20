@@ -26,8 +26,6 @@ pip install yasiu-image
 
 ```py
 from yasiu.image.common import read_gif_frames
-```
-
 
 frames = list(read_gif_frames(path))
 ```
