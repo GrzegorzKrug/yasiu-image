@@ -26,8 +26,6 @@ pip install yasiu-image
 
 ```py
 from yasiu.image.common import read_gif_frames
-```
-
 
 frames = list(read_gif_frames(path))
 ```
@@ -40,4 +38,4 @@ frames = list(read_gif_frames(path))
 
 [3. Image Package](https://pypi.org/project/yasiu-image/)
 
-[4. Pyplot visualisation Package](https://pypi.org/project/yasiu-vis/)
+[4. Visualisation Package](https://pypi.org/project/yasiu-vis/)
