@@ -1,9 +1,11 @@
 from yasiu_image.features import image_to_features, features_to_image
 import pytest
 import cv2
+import os
 
 
-loaded_image = cv2.imread("cat.jpg", 1)
+loaded_image = cv2.imread(os.path.join(
+    os.path.dirname(__file__), "cat.jpg"), 1)
 
 
 @pytest.fixture()
