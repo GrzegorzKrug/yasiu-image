@@ -97,10 +97,3 @@ if __name__ == "__main__":
                 # _cv2.imshow(str(count), imFlip)
                 count += 1
 
-    # mir1 = mirrorAxis(img, )
-    # mir2 = mirrorAxis(img, flip=True)
-    # _cv2.imshow("Orig", img)
-    # _cv2.imshow("Smol1", mir1)
-    # _cv2.imshow("Smol2", mir2)
-
-    # _cv2.waitKey()
