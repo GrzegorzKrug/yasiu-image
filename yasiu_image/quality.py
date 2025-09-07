@@ -4,7 +4,7 @@ import cv2 as _cv2
 
 def squareError(pic1: _np.ndarray, pic2: _np.ndarray, normalize=False):
     """
-    Compare quality of 2 pictures. 
+    Compare quality of 2 pictures 
     Normalize:
         shoud picture be normalized to dimensions?
     """
@@ -19,11 +19,11 @@ def squareError(pic1: _np.ndarray, pic2: _np.ndarray, normalize=False):
         H, W = pic1.shape
         C = 1
 
-    error = _np.abs(pic1-pic2)**2
-    error = error / C/255/255
+    error = _np.abs(pic1 - pic2)**2
+    error = error / C / 255 / 255
 
     if normalize:
-        error = error/H/W
+        error = error / H / W
 
     error = _np.sum(error)
     return error
@@ -31,7 +31,7 @@ def squareError(pic1: _np.ndarray, pic2: _np.ndarray, normalize=False):
 
 def meanError(pic1: _np.ndarray, pic2: _np.ndarray, normalize=True):
     """
-    Compare quality of 2 pictures. 
+    Compare quality of 2 pictures
     Normalize:
         shoud picture be normalized to dimensions?
     """
@@ -46,11 +46,11 @@ def meanError(pic1: _np.ndarray, pic2: _np.ndarray, normalize=True):
         H, W = pic1.shape
         C = 1
 
-    error = _np.abs(pic1-pic2)
-    error = error / C/255
+    error = _np.abs(pic1 - pic2)
+    error = error / C / 255
 
     if normalize:
-        error = error/H/W
+        error = error / H / W
 
     error = _np.sum(error)
     return error
