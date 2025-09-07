@@ -2,47 +2,57 @@ import numpy as _np
 
 from PIL import Image as _Image
 import cv2 as _cv2
+import imageio
 
 
-def read_gif_frames(path):
-    img = _Image.open(path, )
-    ind = 0
-    sequence = []
-    # img = img.convert("RGBA")
-    img.seek(0)
-    # fr = np.array(img, dtype=np.uint8)
-    while True:
-        fr = _np.array(img, dtype=_np.uint8).copy()
-        # print(f"Read shape: {fr.shape}")
-        sequence.append(fr)
+def read_gif_frames(path, convertRGB2BGR=False):
+    # img = _Image.open(path, )
+    mimImage = imageio.mimread(path)
 
-        try:
-            img.seek(ind)
-        except EOFError:
-            # print(f"Breaking at: {ind}")
-            break
-
-        # print(img.tell())
-        ind += 1
-    return sequence
+    for img in mimImage:
+        if convertRGB2BGR:
+            img = _cv2.cvtColor(img, _cv2.COLOR_BGR2RGB)
+        # print(img.shape)
+        yield img
 
 
-def read_webp_frames(path):
-    img = _Image.open(path)
-    ind = 0
+def read_gif_frames_ToList(path, *args, **kwrg):
+    return [*read_gif_frames(path, *args, **kwrg)]
 
-    img.seek(0)
-    # fr = np.array(img, dtype=np.uint8)
-    while True:
-        fr = _np.array(img, dtype=_np.uint8).copy()
-        yield fr
 
-        ind += 1
-        try:
-            img.seek(ind)
-        except EOFError:
-            # print(f"Breaking at: {ind}")
-            break
+def read_gif_frames_ToNumpyArray(path, *args, **kwrg):
+    # raise NotImplementedError
+    temp = read_gif_frames_ToList(path, *args, **kwrg)
+    array = _np.ones((*temp[-1].shape, len(temp)), dtype=_np.uint8)
+    maxChan = temp[-1].shape[2]
+    # array = array[:, :, :, _np.newaxis]
+    # print("array shape:", array.shape)
+    # array[:] = temp
+    for i, im in enumerate(temp):
+        # print(im.shape, "entry")
+        if (maxChan > im.shape[2]):
+            flat = _np.ones_like(im[:, :, 0])
+            flat = flat[:, :, _np.newaxis]
+            # print(flat.shape, "flat")
+            im = _np.concat([im, flat], axis=2)
+
+            # print(im.shape, "upper")
+        # print(im.shape)
+
+        array[:, :, :, i] = im
+
+    return array
+
+
+def read_webp_frames(path, convertRGB2BGR=False):
+    # img = _Image.open(path, )
+    mimImage = imageio.mimread(path)
+
+    for img in mimImage:
+        if convertRGB2BGR:
+            img = _cv2.cvtColor(img, _cv2.COLOR_BGR2RGB)
+        # print(img.shape)
+        yield img
 
 
 def save_image_list_to_gif(frames, exp_path, use_rgba=False, duration=40, quality=100, disposal=2):
@@ -91,6 +101,15 @@ def save_image_list_to_gif(frames, exp_path, use_rgba=False, duration=40, qualit
 
 if __name__ == "__main__":
     import os
-    img = _cv2.imread(os.path.join(os.path.dirname(__file__), "cat.jpg"))
+    GIF_PATH = os.path.join(os.path.dirname(__file__), "..", "images", "vader_crop.gif")
+    import yasiu_image.io
+    import cv2
+    for (i, frame) in enumerate(yasiu_image.io.read_gif_frames(GIF_PATH)):
+        pass
+        text = f"Frame {i}: shp: {frame.shape}"
+        print(text)
+        cv2.imshow("Image", frame)
+        cv2.waitKey()
+        # print
 
     print("Finished with success!")

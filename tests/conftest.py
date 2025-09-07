@@ -3,7 +3,8 @@ import numpy as np
 import cv2
 import os
 
-IMAGE_FOLDER = os.path.join(os.path.dirname(__file__), "..", "images")
+IMAGE_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "images"))
+
 
 @pytest.fixture()
 def blank_image_flat():
@@ -70,3 +71,11 @@ testImage_CatValid = ['cat_full_shape', 'cat_gray', 'cat_gray_3d']
 # __all__ = ['testImage_SmimpleValid', 'testImage_CatValid']
 
 testImage_CombinedValid = [*testImage_SimpleValid, *testImage_CatValid]
+
+TEST_GIF_PATHS = [
+    os.path.join(IMAGE_FOLDER, name) for name in ["bear.gif", "vader_crop.gif", "vader.gif", "wtf.gif"]
+]
+
+TEST_AVIF_PATHS = [
+    os.path.join(IMAGE_FOLDER, name) for name in ["cat.avif"]
+]
