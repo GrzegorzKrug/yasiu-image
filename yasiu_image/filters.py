@@ -1,9 +1,9 @@
 import numpy as np
 
 
-def mirrorAxis(picture, verticalFlip: bool = True, pos=0.5,  flip=False):
+def mirrorAxis(picture, verticalFlip: bool = True, pos=0.5, flip=False):
     """
-    Mirror image along axis in given position.
+    Mirror image along axis in given position. New image will differ in shape.
 
     :param picture: array, 2d, 3d
 
@@ -92,8 +92,11 @@ if __name__ == "__main__":
     for pos in [0.2, 0, 400, 0.8]:
         for verticalFlip in [False, True]:
             for flip in [False, True]:
-                print()
+                # print()
                 imFlip = mirrorAxis(img, verticalFlip, pos, flip)
                 # _cv2.imshow(str(count), imFlip)
                 count += 1
+                # _cv2.imshow("image", imFlip)
+                # _cv2.waitKey()
 
+    print("Finished with success!")
