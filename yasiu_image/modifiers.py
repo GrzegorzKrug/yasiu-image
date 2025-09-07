@@ -124,14 +124,14 @@ def squerify(img: _np.ndarray, /, offset: float = 0.0, *, type_="clip"):
     :param img: 2d np.ndarry
 
     :param type_: Only 'clip' is supported
-    
+
     :param offset_val: float
         Pan clip to side.
         Horizonatal: -1 is left, 1 is right.
         Vertical: -1 is up, 1 is down.
 
         Offset = 0 clips at center.
-    
+
     :return:
     """
 
@@ -167,10 +167,37 @@ def squerify(img: _np.ndarray, /, offset: float = 0.0, *, type_="clip"):
         raise KeyError("Only clip supported")
 
 
+def extend(sequence, increase: tuple[float, float]):
+    h, w, c = sequence[0].shape
+
+    offset_y, offset_x = _np.abs(increase)
+    offset_x = int(offset_x)
+    offset_y = int(offset_y)
+
+    output = []
+    new_h = h + int(abs(offset_y))
+    new_w = w + int(abs(offset_x))
+
+    blank = _np.zeros((new_h, new_w, c), dtype=_np.uint8)
+
+    # h_ind = (new_h - h) // 2
+    # w_ind = (new_w - w) // 2
+    h_off = 0 if offset_x > 0 else abs(offset_x)
+    w_off = 0 if abs(offset_y) < 0 else offset_y
+
+    for fr in sequence:
+        new_frame = blank.copy()
+        new_frame[h_off:h_off + h, w_off:w_off + w] = fr
+        output.append(new_frame)
+
+    return output
+
+
 __all__ = [
     'squerify',
     'resize_with_aspect_ratio',
     'downscale_with_aspect_ratio',
+    'extend',
 ]
 
 
